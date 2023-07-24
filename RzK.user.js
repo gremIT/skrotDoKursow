@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         New Userscript
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  try to take over the world!
 // @author       Grzegorz Wilczyński
 // @match        https://rysujzkrissem.pl/moje-konto/
@@ -11,6 +11,7 @@
 var script = document.createElement('script');
 script.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
 document.getElementsByTagName('head')[0].appendChild(script);
+
 setTimeout(function(){
 (function() {
     'use strict';
@@ -25,6 +26,7 @@ setTimeout(function(){
         if (xmlhttp.readyState==4 && xmlhttp.status==200)
 
         {
+            if(!localStorage.getItem("kursy")){
             var text=xmlhttp.responseText.substring(xmlhttp.responseText.indexOf('<table class="woocommerce-table woocommerce-table--order-downloads shop_table shop_table_responsive order_details">'),xmlhttp.responseText.length)
             var tabela=text.substring(1,text.indexOf('</table>'))
             tabela=tabela.replaceAll("\n","")
@@ -88,9 +90,12 @@ setTimeout(function(){
             arrayRZK.sort(function(a,b) {
                 return a.tekst < b.tekst ? -1 : a.tekst > b.tekst ? 1 : 0;
             })
-            console.log(arrayRZK)
             for(var i=0;i<arrayRZK.length;i++){
                 html+="<a href="+arrayRZK[i].url+" target='_blank'><img src='"+arrayRZK[i].img+"' style='width:100px;padding:5px' title='"+arrayRZK[i].tekst+"'></a>"
+            }
+            localStorage.setItem("kursy",html)
+            }else{
+            html=localStorage.getItem("kursy")
             }
             document.querySelector("#title").innerHTML="<h1>Moje kursy</h1>"
              document.querySelector("#title").innerHTML+=html
