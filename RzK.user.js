@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         New Userscript
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.3
 // @description  try to take over the world!
 // @author       Grzegorz Wilczyński
 // @match        https://rysujzkrissem.pl/moje-konto/
@@ -99,6 +99,14 @@ setTimeout(function(){
             }
             document.querySelector("#title").innerHTML="<h1>Moje kursy</h1>"
              document.querySelector("#title").innerHTML+=html
+             document.querySelector("#title").innerHTML+="<br><button class='btn btn-primary odswiez' class=''>Odśwież</button>"
+            $(document).on("click",".odswiez",function(){
+                console.log(1)
+if(localStorage.getItem("kursy")){
+localStorage.removeItem("kursy")
+    location.reload()
+}
+})
             return xmlhttp.responseText;
         }
     }
