@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         New Userscript
 // @namespace    http://tampermonkey.net/
-// @version      0.3
+// @version      0.4
 // @description  try to take over the world!
 // @author       Grzegorz Wilczyński
 // @match        https://rysujzkrissem.pl/moje-konto/
@@ -17,6 +17,7 @@ setTimeout(function(){
     'use strict';
     document.querySelector("#title").innerHTML="<h1>Moje kursy</h1>"
             var html=""
+            var html2=""
 
     function httpGet(theUrl)
 {
@@ -91,14 +92,21 @@ setTimeout(function(){
                 return a.tekst < b.tekst ? -1 : a.tekst > b.tekst ? 1 : 0;
             })
             for(var i=0;i<arrayRZK.length;i++){
+                console.log(arrayRZK[i].img!=undefined)
+                if(arrayRZK[i].img!=undefined)
                 html+="<a href="+arrayRZK[i].url+" target='_blank'><img src='"+arrayRZK[i].img+"' style='width:100px;padding:5px' title='"+arrayRZK[i].tekst+"'></a>"
+                else
+                html2+="<a href="+arrayRZK[i].url+" target='_blank' style='color:black;width:100px;display: inline-block;border:1px solid black;'>"+arrayRZK[i].tekst+"</a>"
+
             }
             localStorage.setItem("kursy",html)
+            localStorage.setItem("kursy2",html2)
             }else{
             html=localStorage.getItem("kursy")
+            html2=localStorage.getItem("kursy2")
             }
             document.querySelector("#title").innerHTML="<h1>Moje kursy</h1>"
-             document.querySelector("#title").innerHTML+=html
+             document.querySelector("#title").innerHTML+=html+html2
              document.querySelector("#title").innerHTML+="<br><button class='btn btn-primary odswiez' class=''>Odśwież</button>"
             $(document).on("click",".odswiez",function(){
                 console.log(1)
